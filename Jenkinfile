@@ -6,8 +6,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'github-token',
-                    url: 'https://github.com/Sirigidibalaji/projectOne.git'
+                credentialsId: 'github-token',
+                url: 'https://github.com/Sirigidibalaji/projectOne.git'
             }
         }
 
@@ -17,28 +17,11 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                echo 'Testing Completed'
-            }
-        }
-
-        stage('Check Files') {
+        stage('Deploy') {
             steps {
                 bat '''
-                echo Workspace Location:
-                echo %WORKSPACE%
-                echo.
-                echo Files in Workspace:
-                dir
-                '''
-            }
-        }
-
-        stage('Run Website') {
-            steps {
-                bat '''
-                start "" "%WORKSPACE%\\index.html"
+                if not exist C:\\Deploy\\projectOne mkdir C:\\Deploy\\projectOne
+                xcopy * C:\\Deploy\\projectOne /E /Y /I
                 '''
             }
         }
@@ -46,11 +29,7 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline Completed Successfully'
-        }
-
-        failure {
-            echo 'Pipeline Failed'
+            echo 'Website deployed to C:\\Deploy\\projectOne'
         }
     }
 }
