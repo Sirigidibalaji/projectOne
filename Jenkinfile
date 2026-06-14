@@ -28,6 +28,12 @@ pipeline {
                 echo 'Deploying Website'
             }
         }
+
+        stage('Run Website') {
+            steps {
+                bat 'start index.html'
+            }
+        }
     }
 
     post {
