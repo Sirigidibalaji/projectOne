@@ -22,20 +22,11 @@ pipeline {
                 echo 'Testing Completed'
             }
         }
-
-        stage('Run Website') {
-            steps {
-                bat '''
-                cd %WORKSPACE%
-                start "" index.html
-                '''
-            }
-        }
     }
 
     post {
         success {
-            echo 'Website Opened Successfully'
+            echo 'Pipeline Completed Successfully'
         }
         failure {
             echo 'Pipeline Failed'
