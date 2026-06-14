@@ -27,9 +27,31 @@ pipeline {
         }
     }
 
+
     post {
         success {
             echo 'Website deployed to C:\\Deploy\\projectOne'
         }
+    }
+}
+stage('Workspace Debug') {
+    steps {
+        bat '''
+        echo ==========================
+        echo WORKSPACE LOCATION:
+        echo %WORKSPACE%
+        echo ==========================
+
+        echo LIST OF FILES:
+        dir %WORKSPACE%
+
+        echo ==========================
+        echo CHECK INDEX.HTML:
+        if exist "%WORKSPACE%\\index.html" (
+            echo index.html FOUND
+        ) else (
+            echo index.html NOT FOUND
+        )
+        '''
     }
 }
