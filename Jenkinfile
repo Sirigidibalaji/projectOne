@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                credentialsId: 'github-token',
+                url: 'https://github.com/Sirigidibalaji/projectOne.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Static Website Build Successful'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing Completed'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying Website'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline Completed Successfully'
+        }
+
+        failure {
+            echo 'Pipeline Failed'
+        }
+    }
+}
