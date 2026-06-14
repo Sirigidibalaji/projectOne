@@ -13,7 +13,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Static Website Build Successful'
+                echo 'Website Build Successful'
             }
         }
 
@@ -23,24 +23,20 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying Website'
-            }
-        }
-
         stage('Run Website') {
             steps {
-                bat 'start index.html'
+                bat '''
+                cd %WORKSPACE%
+                start "" index.html
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline Completed Successfully'
+            echo 'Website Opened Successfully'
         }
-
         failure {
             echo 'Pipeline Failed'
         }
