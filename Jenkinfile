@@ -17,41 +17,42 @@ pipeline {
             }
         }
 
+        stage('Workspace Debug') {
+            steps {
+                bat '''
+                echo ==========================
+                echo WORKSPACE:
+                echo %WORKSPACE%
+                echo ==========================
+
+                dir %WORKSPACE%
+
+                echo ==========================
+                if exist "%WORKSPACE%\\index.html" (
+                    echo index.html FOUND
+                ) else (
+                    echo index.html NOT FOUND
+                )
+                '''
+            }
+        }
+
         stage('Deploy') {
             steps {
                 bat '''
                 if not exist C:\\Deploy\\projectOne mkdir C:\\Deploy\\projectOne
-                xcopy * C:\\Deploy\\projectOne /E /Y /I
+                xcopy "%WORKSPACE%\\*" C:\\Deploy\\projectOne /E /Y /I
                 '''
             }
         }
     }
 
-
     post {
         success {
-            echo 'Website deployed to C:\\Deploy\\projectOne'
+            echo 'Website deployed successfully'
         }
-    }
-}
-stage('Workspace Debug') {
-    steps {
-        bat '''
-        echo ==========================
-        echo WORKSPACE LOCATION:
-        echo %WORKSPACE%
-        echo ==========================
-
-        echo LIST OF FILES:
-        dir %WORKSPACE%
-
-        echo ==========================
-        echo CHECK INDEX.HTML:
-        if exist "%WORKSPACE%\\index.html" (
-            echo index.html FOUND
-        ) else (
-            echo index.html NOT FOUND
-        )
-        '''
+        failure {
+            echo 'Pipeline Failed'
+        }
     }
 }
