@@ -11,26 +11,29 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building Application...'
+                echo 'Building Website...'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running Tests...'
+                bat 'dir'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Application...'
+                bat '''
+                if not exist C:\\Deploy\\projectOne mkdir C:\\Deploy\\projectOne
+                xcopy "%WORKSPACE%\\*" C:\\Deploy\\projectOne /E /Y /I
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'Build Successful!'
+            echo 'Website deployed successfully!'
         }
 
         failure {
